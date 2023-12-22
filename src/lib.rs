@@ -430,7 +430,7 @@ impl<'a> Ddddocr<'a> {
                 .new_session_builder()?
                 .use_cuda(device_id)?
                 .with_model_from_memory(model)?,
-            charset: Some(std::borrow::Cow::Borrowed(&charset)),
+            charset: Some(std::borrow::Cow::Borrowed(charset.clone())),
         })
     }
 
