@@ -372,7 +372,7 @@ const STRIDES: [u32; 3] = [8, 16, 32];
 pub struct Ddddocr<'a> {
     diy: bool,
     session: onnxruntime::session::Session<'a>,
-    charset: Option<std::borrow::Cow<'a, Charset>>,
+    charset: Option<Charset>,
 }
 
 /// 我也不知道这里是不是安全的，但我多线程测试过，没有发现异常。
@@ -396,14 +396,14 @@ impl<'a> Ddddocr<'a> {
             session: ENVIRONMENT
                 .new_session_builder()?
                 .with_model_from_memory(model)?,
-            charset: Some(std::borrow::Cow::Owned(charset)),
+            charset: Some(charset),
         })
     }
 
     /// 从内存加载模型和字符集，
     /// 只能使用内容识别，
     /// 使用目标检测会恐慌。
-    pub fn new_ref<MODEL>(model: MODEL, charset: &'a Charset) -> anyhow::Result<Self>
+    pub fn new_ref<MODEL>(model: MODEL, charset: Charset) -> anyhow::Result<Self>
     where
         MODEL: AsRef<[u8]>,
     {
@@ -412,7 +412,7 @@ impl<'a> Ddddocr<'a> {
             session: ENVIRONMENT
                 .new_session_builder()?
                 .with_model_from_memory(model)?,
-            charset: Some(std::borrow::Cow::Borrowed(charset)),
+            charset: Some(charset),
         })
     }
 
@@ -430,7 +430,7 @@ impl<'a> Ddddocr<'a> {
                 .new_session_builder()?
                 .use_cuda(device_id)?
                 .with_model_from_memory(model)?,
-            charset: Some(std::borrow::Cow::Borrowed(&charset)),
+            charset: Some(charset),
         })
     }
 
@@ -440,7 +440,7 @@ impl<'a> Ddddocr<'a> {
     #[cfg(feature = "cuda")]
     pub fn new_cuda_ref<MODEL>(
         model: MODEL,
-        charset: &'a Charset,
+        charset: harset,
         device_id: i32,
     ) -> anyhow::Result<Self>
     where
@@ -452,7 +452,7 @@ impl<'a> Ddddocr<'a> {
                 .new_session_builder()?
                 .use_cuda(device_id)?
                 .with_model_from_memory(model)?,
-            charset: Some(std::borrow::Cow::Borrowed(charset)),
+            charset: Some(charset),
         })
     }
 
