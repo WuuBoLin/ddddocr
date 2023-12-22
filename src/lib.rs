@@ -420,17 +420,18 @@ impl<'a> Ddddocr<'a> {
     /// 只能使用内容识别，
     /// 使用目标检测会恐慌。
     #[cfg(feature = "cuda")]
-    pub fn new_cuda<MODEL>(model: MODEL, charset: &'a Charset, device_id: i32) -> anyhow::Result<Self>
+    pub fn new_cuda<MODEL>(model: MODEL, charset: Charset, device_id: i32) -> anyhow::Result<Self>
     where
         MODEL: AsRef<[u8]>,
     {
+	let charset_borrowed = 'a charset;
         Ok(Self {
             diy: Self::is_diy(model.as_ref()),
             session: ENVIRONMENT
                 .new_session_builder()?
                 .use_cuda(device_id)?
                 .with_model_from_memory(model)?,
-            charset: Some(std::borrow::Cow::Borrowed(charset)),
+            charset: Some(std::borrow::Cow::Borrowed(charset_borrowed)),
         })
     }
 
@@ -522,7 +523,7 @@ impl<'a> Ddddocr<'a> {
 
         Self::new_cuda(
             std::fs::read(model)?,
-	    &charset,
+	    charset,
             device_id,
         )
     }
