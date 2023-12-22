@@ -424,14 +424,13 @@ impl<'a> Ddddocr<'a> {
     where
         MODEL: AsRef<[u8]>,
     {
-	let charset_borrowed = 'a charset;
         Ok(Self {
             diy: Self::is_diy(model.as_ref()),
             session: ENVIRONMENT
                 .new_session_builder()?
                 .use_cuda(device_id)?
                 .with_model_from_memory(model)?,
-            charset: Some(std::borrow::Cow::Borrowed(charset_borrowed)),
+            charset: Some(std::borrow::Cow::Borrowed(&charset)),
         })
     }
 
