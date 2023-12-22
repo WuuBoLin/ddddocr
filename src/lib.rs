@@ -517,9 +517,12 @@ impl<'a> Ddddocr<'a> {
         PATH1: AsRef<std::path::Path>,
         PATH2: AsRef<std::path::Path>,
     {
+	let charset_str = std::fs::read_to_string(charset)?;
+	let charset: Charset = serde_json::from_str(&charset_str)?;
+
         Self::new_cuda(
             std::fs::read(model)?,
-            &serde_json::from_str::<Charset>(&std::fs::read_to_string(charset)?)?,
+	    &charset,
             device_id,
         )
     }
