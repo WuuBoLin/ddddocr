@@ -809,6 +809,17 @@ impl<'a> Ddddocr<'a> {
     {
         self.detection(std::fs::read(path)?)
     }
+
+    /// 判断是否为自定义模型。
+    pub fn is_diy<MODEL>(model: MODEL) -> bool
+    where
+        MODEL: AsRef<[u8]>,
+    {
+        // 比较 common.onnx 和 common_old.onnx 的 sha256
+        let sha256 = sha256::digest(model.as_ref());
+        sha256 != "90e432635bfb100ac6b856220a10b186053264cc307dd049d58e8ea2643cb6e9"
+            && sha256 != "b1d5e1344954355b10b40632062b8a9def06bcc33229fb667274662bf31dcf3f"
+    }
 }
 
 #[cfg(test)]
