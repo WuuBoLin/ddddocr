@@ -519,7 +519,7 @@ impl<'a> Ddddocr<'a> {
     {
         Self::new_cuda(
             std::fs::read(model)?,
-            serde_json::from_str::<Charset>(&std::fs::read_to_string(charset)?)?,
+            &serde_json::from_str::<Charset>(&std::fs::read_to_string(charset)?)?,
             device_id,
         )
     }
