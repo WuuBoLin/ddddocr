@@ -440,7 +440,7 @@ impl<'a> Ddddocr<'a> {
     #[cfg(feature = "cuda")]
     pub fn new_cuda_ref<MODEL>(
         model: MODEL,
-        charset: harset,
+        charset: Charset,
         device_id: i32,
     ) -> anyhow::Result<Self>
     where
